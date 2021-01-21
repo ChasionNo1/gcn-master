@@ -134,10 +134,12 @@ class Dense(Layer):
         self.featureless = featureless
         self.bias = bias
 
-        # helper variable for sparse dropout
+        # helper variable for sparse dropout 稀疏dropout的辅助变量
         self.num_features_nonzero = placeholders['num_features_nonzero']
 
         with tf.variable_scope(self.name + '_vars'):
+            # glorot认为优秀的初始化应该使得各层的激活值和状态梯度的方差在传播过程中的方差保持一致。
+            # 初始化方式
             self.vars['weights'] = glorot([input_dim, output_dim],
                                           name='weights')
             if self.bias:
@@ -146,6 +148,7 @@ class Dense(Layer):
         if self.logging:
             self._log_vars()
 
+    # 这里就重写了_call函数
     def _call(self, inputs):
         x = inputs
 
